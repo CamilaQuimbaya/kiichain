@@ -48,7 +48,7 @@ Este es un proyecto [Next.js](https://nextjs.org/) inicializado con [`create-nex
 - Acceder a la página del contrato para ver información privada almacenada.
 
 ## Información de despliegue
-- Enlace de la aplicación: [Web3 App](https://web3-qk3ri4cfp-camilaquimbayas-projects.vercel.app/)
+- Enlace de la aplicación: [Web3 App]([https://web3-qk3ri4cfp-camilaquimbayas-projects.vercel.app/](https://web3-one-gold.vercel.app/))
 - El contrato inteligente está desplegado actualmente en la dirección: `0x74d020bE53e94C785c45Ed53B66cf317A4b0D595`
 - Dirección de la billetera del desarrollador: `0x84aF5aF40dBB25580547d8369F6710aE6620FBC9`
 - Red de despliegue: Fuji (Avalanche Testnet)
