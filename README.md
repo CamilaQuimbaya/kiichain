@@ -63,6 +63,36 @@ npx hardhat run scripts/deploy.js --network fuji
 - Agregar autenticación con wallets descentralizadas.
 - Mejorar la interfaz y experiencia de usuario.
 
+- # Guía para Crear una Wallet e Interactuar con Avalanche Fuji
+
+## 1. Instalación de MetaMask
+
+1. Descarga e instala MetaMask desde [MetaMask](https://metamask.io/).
+2. Crea una nueva billetera y guarda la frase de recuperación en un lugar seguro.
+
+## 2. Agregar la red Avalanche Fuji a MetaMask
+
+1. Abre MetaMask y selecciona "Agregar red manualmente".
+2. Ingresa los siguientes datos:
+
+   - **Network Name**: Avalanche FUJI C-Chain  
+   - **RPC URL**: https://api.avax-test.network/ext/bc/C/rpc  
+   - **Chain ID**: 43113  
+   - **Currency Symbol**: AVAX  
+   - **Block Explorer URL**: [Snowtrace Testnet](https://testnet.snowtrace.io/)  
+
+3. Guarda la configuración y cambia a la red Fuji en MetaMask.
+
+## 3. Obtener AVAX de prueba (Faucet)
+
+Para desplegar contratos, necesitas AVAX en Fuji. Sigue estos pasos:
+
+1. Visita el [Faucet de Avalanche](https://faucet.avax.network/).
+2. Ingresa la dirección de tu wallet de MetaMask.
+3. Reclama AVAX de prueba para comenzar a interactuar con la red.
+
+
+
 ## Licencia
 Este proyecto se encuentra bajo la licencia MIT.
 
