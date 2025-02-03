@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 // Dirección de tu contrato en Fuji Testnet
-const CONTRACT_ADDRESS = "0x74d020bE53e94C785c45Ed53B66cf317A4b0D595"; // Reemplaza con la dirección real
+const CONTRACT_ADDRESS = "0x121Df3B79C0082920457a122Dc08CB9A9762Ab05"; // Reemplaza con la dirección real
 
 // ABI de tu contrato (copia esto desde el JSON generado por Hardhat o desde Remix)
 const ABI = [
@@ -45,6 +45,13 @@ const ABI = [
     {
       "inputs": [{ "internalType": "string", "name": "_kiichain", "type": "string" }],
       "name": "updateKiiChain",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "address", "name": "_address", "type": "address" }],
+      "name": "removeAddressFromWhiteList",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

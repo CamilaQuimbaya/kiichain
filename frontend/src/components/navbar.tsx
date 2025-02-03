@@ -3,21 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import NavLink from "./navLink";
 import { motion } from "framer-motion";
 import React from "react";
 import { ethers } from "ethers";
-
-const links = [
-  { url: "/", title: "Home" },
-  { url: "/about", title: "About" },
-  { url: "/contract", title: "Contract"},
-  { url: "/connect", title: "Connect Wallet" },
-];
+import Card from "./card";
+import { useRouter } from "next/navigation";
+import { getContract } from "@/utils/contract";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const router = useRouter();   
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -27,6 +24,7 @@ const Navbar: React.FC = () => {
           const accounts = await provider.send("eth_accounts", []);
           if (accounts.length > 0) {
             setWalletAddress(accounts[0]);
+            await fetchUserRole(accounts[0]);
           }
         } catch (error) {
           console.error("Error checking wallet connection:", error);
@@ -36,19 +34,26 @@ const Navbar: React.FC = () => {
     checkWalletConnection();
   }, []);
 
-  const connectWallet = async () => {
-    if (window.ethereum) {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await provider.send("eth_requestAccounts", []);
-        setWalletAddress(accounts[0]);
-      } catch (error) {
-        console.error("Error connecting wallet:", error);
+  // eslint-disable-next-line no-unused-vars
+  const fetchUserRole = async (_address: string) => {
+    try {
+      const contract = await getContract();
+      if (contract) {
+        const role = await contract.whoImI();
+        setUserRole(role);
       }
-    } else {
-      alert("MetaMask no está instalado. Instálalo para continuar.");
+    } catch (error) {
+      console.error("Error fetching user role:", error);
     }
   };
+
+  
+
+  const links = [
+    { url: "/", title: "Home" },
+    { url: "/about", title: "About" },
+    ...(walletAddress && userRole !== "unknown" ? [{ url: "/contract", title: "Contract" }] : []),
+  ];
 
   const topVariants = {
     closed: { rotate: 0 },
@@ -79,53 +84,39 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-12 lg:px-16 xl:px-48 text-xl">
+    <div className="h-full flex items-center justify-between px-4 sm:px-8 md:px-28 lg:px-10 xl:px-48 text-xl bg-dark-neon">
       {/* LINKS */}
-      <div className="hidden md:flex gap-4 w-1/3">
+      <div className="hidden md:flex gap-6 w-1/3">
         {links.map((link) => (
-          <NavLink link={link} key={link.title} />
+          <Link
+            key={link.title}
+            href={link.url}
+            className="relative text-white font-semibold transition-all duration-300 ease-in-out hover:text-cyan-200 hover:translate-y-[-2px] after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-teal-400 after:transition-all after:duration-300 after:ease-in-out hover:after:w-full"
+          >
+            {link.title}
+          </Link>
         ))}
       </div>
 
       {/* LOGO */}
       <div className="md:hidden lg:flex xl:w-1/3 xl:justify-center">
         <Link href="/">
-          <Image src="/logo.svg" alt="Logo" width={100} height={100} />
+          <Image src="/logo.png" alt="Logo" width={180} height={180} />
         </Link>
       </div>
 
       {/* BOTÓN DE CONECTAR WALLET */}
       <div className="w-1/3 flex justify-end">
         {walletAddress ? (
-          <span className="text-green-400">{walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</span>
+          <Card walletAddress={walletAddress} />
         ) : (
           <button
-            onClick={connectWallet}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            onClick={() => router.push("/connect")}
+            className="cursor-pointer text-white font-bold relative text-[14px] w-[9em] h-[3em] text-center bg-gradient-to-r from-violet-500 from-10% via-sky-500 via-30% to-pink-500 to-90% bg-[length:400%] rounded-[30px] z-10 hover:animate-gradient-xy hover:bg-[length:100%] before:content-[''] before:absolute before:-top-[5px] before:-bottom-[5px] before:-left-[5px] before:-right-[5px] before:bg-gradient-to-r before:from-violet-500 before:from-10% before:via-sky-500 before:via-30% before:to-pink-500 before:bg-[length:400%] before:-z-10 before:rounded-[35px] before:hover:blur-xl before:transition-all before:ease-in-out before:duration-[1s] before:hover:bg-[length:10%] active:bg-violet-700 focus:ring-violet-700 hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
           >
             Conectar Wallet
           </button>
         )}
-      </div>
-
-      {/* SOCIAL LINKS */}
-      <div className="hidden md:flex gap-4 w-1/3">
-        {[
-          "github",
-          "instagram",
-          "facebook",
-          "pinterest",
-          "linkedin",
-        ].map((platform) => (
-          <Link href="/" key={platform}>
-            <Image
-              src={`/${platform}.png`}
-              alt={platform}
-              width={24}
-              height={24}
-            />
-          </Link>
-        ))}
       </div>
 
       {/* RESPONSIVE MENU */}

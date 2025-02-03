@@ -16,7 +16,7 @@ const ContractPage = () => {
       animate={{ y: "0%" }}
       transition={{ duration: 1 }}
     >
-      <div className="flex min-h-screen items-center justify-center bg-gray-800">
+      <div className="flex min-h-screen items-start pt-12 justify-center bg-dark-neon">
       <PrivateInfo />
       </div>
     </motion.div>
